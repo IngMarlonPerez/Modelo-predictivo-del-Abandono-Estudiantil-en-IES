@@ -1,0 +1,62 @@
+# ==========================================================================
+#  Sistema completo en contenedores: SQL Server 2022, API y web.
+#  Se levanta con «npm run dev» (scripts/dev.mjs), que elige puertos libres
+#  y pasa VICMAR_PUERTO_SQL / VICMAR_PUERTO_API / VICMAR_PUERTO_WEB.
+#  Los 4 modelos candidatos (RF_PONDERADO, RF_SMOTE, LOGISTICA, LIGHTGBM) y
+#  el modelo ganador por institución viven en backend/ml/modelos (montado).
+#  Autores: Marlon David Pérez Almachi, Víctor Manuel Lluilema Pisco (UNEMI, 2026)
+# ==========================================================================
+name: vicmar
+
+services:
+  # Solo se crea si NO existe ya un contenedor «vicmar-sqlserver» en el equipo
+  # (scripts/dev.mjs activa el perfil «sql»). Si existe, se reutiliza.
+  sqlserver:
+    profiles: ["sql"]
+    container_name: vicmar-sqlserver
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: ${DB_PASSWORD:-}
+    ports:
+      - "127.0.0.1:${VICMAR_PUERTO_SQL:-14330}:1433"
+    volumes:
+      - datos_sql:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q \"SELECT 1\" -b -o /dev/null"]
+      interval: 10s
+      timeout: 5s
+      start_period: 30s
+      retries: 15
+
+  api:
+    build: ./backend
+    env_file: ./backend/.env
+    environment:
+      DB_HOST: ${VICMAR_DB_HOST:-sqlserver,1433}
+      ALLOWED_ORIGINS: http://localhost:${VICMAR_PUERTO_WEB:-3000},http://127.0.0.1:${VICMAR_PUERTO_WEB:-3000}
+    volumes:
+      - ./backend:/app/backend
+      - /app/backend/venv
+      - ./base_de_datos:/app/base_de_datos
+      - ./datos:/app/datos
+    ports:
+      - "127.0.0.1:${VICMAR_PUERTO_API:-8090}:8090"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+        required: false
+
+  web:
+    build: ./frontend
+    ports:
+      - "${VICMAR_PUERTO_WEB:-3000}:3000"
+    depends_on:
+      api:
+        condition: service_started
+
+volumes:
+  datos_sql:

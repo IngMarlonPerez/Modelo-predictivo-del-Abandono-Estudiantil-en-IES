@@ -1,0 +1,18 @@
+version: 2
+updates:
+  - package-ecosystem: pip
+    directory: /backend
+    target-branch: devmarlon
+    schedule: { interval: monthly }
+  - package-ecosystem: npm
+    directory: /frontend
+    target-branch: devmarlon
+    schedule: { interval: monthly }
+  - package-ecosystem: docker
+    directories: [/backend, /frontend]
+    target-branch: devmarlon
+    schedule: { interval: monthly }
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: devmarlon
+    schedule: { interval: monthly }

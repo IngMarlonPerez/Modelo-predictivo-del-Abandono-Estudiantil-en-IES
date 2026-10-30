@@ -1,0 +1,20 @@
+{
+  "name": "vicmar-sistema",
+  "version": "3.0.0",
+  "private": true,
+  "description": "Sistema de alerta temprana del abandono estudiantil: arranque completo en Docker con npm run dev",
+  "author": "Marlon David Pérez Almachi y Víctor Manuel Lluilema Pisco",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "start": "node scripts/dev.mjs",
+    "dev:local": "node scripts/iniciar.mjs",
+    "estado": "docker compose ps",
+    "logs": "docker compose logs -f --tail 100",
+    "stop": "docker compose stop",
+    "reconstruir": "scripts\reconstruir_sistema.bat",
+    "test": "cd backend && venv\\Scripts\\python.exe -m pytest -q && cd ../frontend && npm test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
