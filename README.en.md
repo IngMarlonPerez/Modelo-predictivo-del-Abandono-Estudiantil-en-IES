@@ -150,7 +150,7 @@ Tests: `python -m pytest -q` (backend, 153 tests plus 8 SQL Server integration t
 
 ## Documentation
 
-[Avance 2 report (Spanish, PDF)](documentacion/avances/AVANCE2_MARLON_VICTOR.pdf) · [User manual](documentacion/manuales/MANUAL_DE_USUARIO.md) · [Installation manual](documentacion/manuales/MANUAL_TECNICO_DE_INSTALACION.md) · [Acceptance tests](documentacion/manuales/GUIA_DE_PRUEBAS_DE_ACEPTACION.md)
+[User manual](documentacion/manuales/MANUAL_DE_USUARIO.md) · [Installation manual](documentacion/manuales/MANUAL_TECNICO_DE_INSTALACION.md) · [Acceptance tests](documentacion/manuales/GUIA_DE_PRUEBAS_DE_ACEPTACION.md)
 
 ## Citation
 
