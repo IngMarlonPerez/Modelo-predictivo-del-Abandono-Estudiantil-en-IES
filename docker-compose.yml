@@ -32,7 +32,9 @@ services:
 
   api:
     build: ./backend
-    env_file: ./backend/.env
+    env_file:
+      - path: ./backend/.env
+        required: false
     environment:
       DB_HOST: ${VICMAR_DB_HOST:-sqlserver,1433}
       ALLOWED_ORIGINS: http://localhost:${VICMAR_PUERTO_WEB:-3000},http://127.0.0.1:${VICMAR_PUERTO_WEB:-3000}
