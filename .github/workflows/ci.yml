@@ -61,7 +61,9 @@ jobs:
       - run: node --check scripts/dev.mjs
 
   origen:
-    name: Origen del PR
+    # Solo el pull request publica «Origen del PR»; en un push el trabajo usa otro
+    # nombre para que su resultado no satisfaga la regla de la rama protegida.
+    name: ${{ github.event_name == 'pull_request' && 'Origen del PR' || 'Origen (sin PR)' }}
     runs-on: ubuntu-latest
     steps:
       - name: Respetar el flujo devmarlon/contribuciones → pruebas → main
