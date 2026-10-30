@@ -61,7 +61,10 @@ jobs:
       - run: node --check scripts/dev.mjs
 
   origen:
-    name: Origen del PR
+    # El nombre lleva la rama destino («Origen del PR → main»): las verificaciones se
+    # guardan por commit, y así el resultado de un PR hacia pruebas no cuenta para
+    # un PR hacia main con el mismo commit. En un push el nombre no cuenta para nada.
+    name: ${{ github.event_name == 'pull_request' && format('Origen del PR → {0}', github.base_ref) || 'Origen (sin PR)' }}
     runs-on: ubuntu-latest
     steps:
       - name: Respetar el flujo devmarlon/contribuciones → pruebas → main
