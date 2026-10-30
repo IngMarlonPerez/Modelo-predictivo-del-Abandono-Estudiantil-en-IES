@@ -32,7 +32,7 @@ VicMar estima, para cada estudiante con matrícula vigente, la **probabilidad de
 
 ## 2. Ingresar
 
-Abra el navegador en la dirección que le indicó Administración de TI (en la instalación de prueba, `http://localhost:3000`). La pantalla de apertura dibuja el emblema de VicMar y muestra las seis capacidades del sistema alrededor del formulario.
+Abra el navegador en la dirección que le indicó Administración de TI. En la instalación de prueba, el comando `npm run dev` enciende todo el sistema y abre el navegador por usted. La dirección suele ser `http://localhost:3000`, pero si ese puerto estaba ocupado puede ser otra, por ejemplo `http://localhost:3001`; la consola la muestra al terminar. La pantalla de apertura dibuja el emblema de VicMar y muestra las seis capacidades del sistema alrededor del formulario.
 
 ![Pantalla de apertura e ingreso](../capturas/av2_cap_ingreso.png)
 
