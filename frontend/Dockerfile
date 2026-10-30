@@ -3,7 +3,7 @@
 #  instalan dentro de la imagen; /api se reenvía al contenedor de la API.
 #  Autores: Marlon David Pérez Almachi, Víctor Manuel Lluilema Pisco (UNEMI, 2026)
 # ==========================================================================
-FROM node:22-alpine
+FROM node:25-alpine
 
 WORKDIR /app
 COPY package.json package-lock.json ./
