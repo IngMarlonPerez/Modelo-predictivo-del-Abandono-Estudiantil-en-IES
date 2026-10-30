@@ -9,7 +9,7 @@
 
 <p align="center">
   <a href="https://github.com/IngMarlonPerez/Modelo-predictivo-del-Abandono-Estudiantil-en-IES/actions/workflows/ci.yml"><img src="https://github.com/IngMarlonPerez/Modelo-predictivo-del-Abandono-Estudiantil-en-IES/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <img src="https://img.shields.io/badge/versión-3.0_·_Avance_2-FF6900?style=flat-square" alt="Versión 3.0, Avance 2">
+  <img src="https://img.shields.io/badge/versión-3.0_·_Trabajo_final-FF6900?style=flat-square" alt="Versión 3.0, trabajo final">
   <a href="CITATION.cff"><img src="https://img.shields.io/badge/cita-CITATION.cff-002E45?style=flat-square" alt="Cómo citar"></a>
   <a href="#licencia"><img src="https://img.shields.io/badge/licencia-uso_restringido_(titulación)-6E7781?style=flat-square" alt="Licencia"></a>
 </p>
@@ -118,6 +118,8 @@ La versión 3 consolida el enfoque académico: todo el sistema, de la base de da
 | Usuarios | Tres roles (autoridad académica, bienestar estudiantil y administración de TI), capacidades por rol, auditoría y bloqueo por intentos |
 | Interfaz | Identidad propia (isotipo animado en naranja UNEMI), apertura con las seis capacidades, panel ejecutivo, ficha con simulador, seguimiento, reportes PDF y Excel, tema claro y oscuro, versión móvil |
 | Operación | `reconstruir_sistema.bat` deja todo listo de punta a punta; 153 pruebas del backend y 11 de la interfaz |
+| Despliegue | `npm run dev` levanta todo en Docker con un solo comando: instala Docker si falta, elige puertos libres, descarga OULAD y carga los datos de prueba |
+| Repositorio | Flujo de ramas `devmarlon`/`contribuciones` → `pruebas` → `main` con reglas de protección, CI obligatoria y escaneo de secretos |
 
 ## Identidad visual
 
@@ -324,7 +326,6 @@ base_de_datos/        Script del almacén y datos de prueba (simulador UNEMI)
 scripts/              iniciar.mjs, reconstruir_sistema.bat, levantar_sistema.bat y demo_tesis.ps1
 datos/                Datos externos (OULAD, se descargan aparte)
 documentacion/
-├── avances/          AVANCE1 y AVANCE2 (docx y pdf)
 ├── generador_documentos/  Generación del Avance 2 desde los resultados reales
 ├── diagramas/        UML, arquitectura y esquema estrella (PNG y fuentes)
 ├── figuras/          Figuras de validación de cada institución
@@ -338,7 +339,6 @@ documentacion/
 
 ## Documentación
 
-- 📄 [Avance 2 (PDF)](documentacion/avances/AVANCE2_MARLON_VICTOR.pdf) · [DOCX](documentacion/avances/AVANCE2_MARLON_VICTOR.docx)
 - 📘 [Manual de usuario](documentacion/manuales/MANUAL_DE_USUARIO.md) · [Manual técnico de instalación](documentacion/manuales/MANUAL_TECNICO_DE_INSTALACION.md) · [Guía de pruebas de aceptación](documentacion/manuales/GUIA_DE_PRUEBAS_DE_ACEPTACION.md)
 - 🗃️ [Diccionario de datos](documentacion/tecnica/DICCIONARIO_DE_DATOS.md) · [Decisiones técnicas](documentacion/decisiones/)
 
