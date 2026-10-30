@@ -182,12 +182,35 @@ Para generar contraseñas nuevas: `cd backend` y `venv\Scripts\python -m scripts
 
 ## 8. Encender y apagar el sistema
 
+**Con un solo comando (recomendado):**
+
+```bat
+npm run dev
+```
+
+El comando:
+- Abre Docker Desktop si está cerrado.
+- Elige puertos libres.
+- Levanta los contenedores de SQL Server, la API y la web.
+- Abre el navegador en la pantalla de ingreso.
+
+La dirección real aparece al final en la consola, por ejemplo `http://localhost:3001` si el 3000 estaba ocupado.
+
+| Acción | Comando |
+|---|---|
+| Ver el estado | `npm run estado` |
+| Ver los registros | `npm run logs` |
+| Apagar sin borrar datos | `npm run stop` |
+
+Si el contenedor `vicmar-sqlserver` se borra por error, el siguiente `npm run dev` lo vuelve a crear. Los datos se conservan en el volumen `vicmar_datos_sql`. No use `docker compose down -v`: borra ese volumen.
+
+**Sin contenedores para la API y la web** (requiere Python 3.13 o 3.14):
+
 ```bat
 scripts\levantar_sistema.bat
 ```
 
-Inicia el contenedor, abre la API en una ventana y la aplicación web en otra (instala lo que falte con `npm install`).
-Abra <http://localhost:3000>. Para apagar: cierre las dos ventanas y, si quiere, `docker stop vicmar-sqlserver`.
+Inicia el contenedor, abre la API en una ventana y la aplicación web en otra. Para apagar: cierre las dos ventanas y, si quiere, ejecute `docker stop vicmar-sqlserver`.
 
 ---
 
@@ -240,8 +263,9 @@ Copie también `backend\datos_locales\` (cuentas de usuario) y `backend\ml\model
 | El pipeline se queda en «Esperando a que SQL Server acepte conexiones» | Contenedor apagado o `DB_HOST` con otro puerto | `docker ps`; `docker start vicmar-sqlserver`; revisar `DB_HOST` y `DB_PASSWORD` |
 | El contenedor se detiene al crearlo | La contraseña de `sa` no cumple la política | Crearlo de nuevo con una contraseña más fuerte |
 | Docker Desktop no arranca por un socket dañado | Apagado brusco | Cerrar Docker Desktop y **renombrar** `%LOCALAPPDATA%\Docker\run`. **Nunca** usar «Reset to factory defaults»: borra el contenedor y sus bases |
-| Puerto `3000` u `8090` ocupado | Otro programa lo usa | Cambiar `port` en `vite.config.ts` o el `--port` de la API junto con `VITE_BACKEND_URL` |
-| El pipeline se detiene en `oulad` | Faltan los CSV | Descargarlos (ver `datos/README.md`) o usar `--sin-oulad` |
+| Puerto `3000`, `8090` o `14330` ocupado | Otro programa lo usa | `npm run dev` elige solo el siguiente puerto libre y lo muestra en la consola |
+| El pipeline se detiene en `oulad` | Faltan los CSV | `npm run dev` los descarga del repositorio UCI; sin internet, descargarlos a mano (ver `datos/README.md`) o usar `--sin-oulad` |
+| `npm run dev` dice que Docker no respondió | Docker Desktop tarda en arrancar | Esperar a que diga «Engine running» y repetir `npm run dev` |
 | La consulta dice que ningún proveedor de IA está disponible | Sin claves o cuota agotada | Agregar otra clave en el `.env`; las métricas certificadas siguen respondiendo |
 | El panel dice «Todavía no hay estudiantes calificados» | No se ejecutaron `entrenar` y `calificar` | `reconstruir_sistema.bat --desde entrenar` |
 | `ModuleNotFoundError` | Se usó el Python del sistema | Usar `backend\venv\Scripts\python` |
@@ -273,7 +297,9 @@ Copie también `backend\datos_locales\` (cuentas de usuario) y `backend\ml\model
 | Reconstruir todo | `scripts\reconstruir_sistema.bat` |
 | Retomar desde un paso | `scripts\reconstruir_sistema.bat --desde calificar` |
 | Evaluar la consulta con IA | `scripts\reconstruir_sistema.bat --solo consulta --con-consulta` |
-| Encender | `scripts\levantar_sistema.bat` |
+| Encender todo (Docker) | `npm run dev` |
+| Estado / registros / apagar | `npm run estado` · `npm run logs` · `npm run stop` |
+| Encender sin contenedores | `scripts\levantar_sistema.bat` |
 
 | Servicio | Dirección |
 |---|---|
