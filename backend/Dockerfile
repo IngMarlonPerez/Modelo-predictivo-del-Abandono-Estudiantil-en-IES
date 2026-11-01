@@ -4,7 +4,7 @@
 #  los modelos entrenados (ml/modelos) y el .env se montan desde el equipo.
 #  Autores: Marlon David Pérez Almachi, Víctor Manuel Lluilema Pisco (UNEMI, 2026)
 # ==========================================================================
-FROM python:3.13-slim-bookworm
+FROM python:3.15-slim-bookworm
 
 ENV PYTHONUNBUFFERED=1 PYTHONUTF8=1 PYTHONIOENCODING=utf-8 ACCEPT_EULA=Y
 
