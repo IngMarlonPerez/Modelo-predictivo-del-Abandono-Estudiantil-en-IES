@@ -32,6 +32,16 @@ def _entero(nombre: str, defecto: int) -> int:
         return defecto
 
 
+def _booleano(nombre: str, defecto: bool) -> bool:
+    """Interpreta yes/no, true/false, si/no, 1/0; cualquier otro valor usa el defecto."""
+    valor = _texto(nombre).lower()
+    if valor in ('yes', 'true', 'si', 'sí', '1', 'on'):
+        return True
+    if valor in ('no', 'false', '0', 'off'):
+        return False
+    return defecto
+
+
 def _decimal(nombre: str, defecto: float) -> float:
     try:
         return float(_texto(nombre, str(defecto)))
@@ -62,6 +72,11 @@ class Configuracion:
     # SQL Server
     db_host: str = field(default_factory=lambda: _texto('DB_HOST', 'localhost,1433'))
     db_driver: str = field(default_factory=lambda: _texto('DB_DRIVER', 'ODBC Driver 18 for SQL Server'))
+    # La conexión siempre va cifrada (Encrypt=yes). Aceptar el certificado
+    # autofirmado del contenedor solo ocurre si DB_TRUST_SERVER_CERT lo permite;
+    # sin la variable se acepta en desarrollo y se rechaza en producción.
+    db_confiar_certificado: bool = field(default_factory=lambda: _booleano(
+        'DB_TRUST_SERVER_CERT', _texto('APP_ENV', 'development').lower() != 'production'))
     db_usuario_admin: str = field(default_factory=lambda: _texto('DB_USER', 'sa'))
     db_clave_admin: str = field(default_factory=lambda: _texto('DB_PASSWORD'))
     almacen: str = field(default_factory=lambda: _texto('ALMACEN_DB', 'ALMACEN_ACADEMICO'))
@@ -88,6 +103,8 @@ class Configuracion:
     temperatura: float = field(default_factory=lambda: _decimal('LLM_TEMPERATURE', 0.0))
     max_tokens: int = field(default_factory=lambda: _entero('LLM_MAX_TOKENS', 1600))
     tiempo_maximo_llm_s: int = field(default_factory=lambda: _entero('TIEMPO_MAXIMO_LLM_S', 45))
+    # Política de datos: con CONSULTA_INTERPRETAR=0 ningún resultado sale hacia un proveedor de IA.
+    interpretar_con_ia: bool = field(default_factory=lambda: _texto('CONSULTA_INTERPRETAR', '1') != '0')
 
     @property
     def proveedores_ia(self) -> list[ProveedorIA]:
