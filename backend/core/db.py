@@ -48,8 +48,15 @@ def _pyodbc():
 
 
 def _cadena(usuario: str, clave: str, base: str) -> str:
+    """Arma la cadena ODBC con el canal siempre cifrado (Encrypt=yes).
+
+    TrustServerCertificate=yes solo se agrega si DB_TRUST_SERVER_CERT lo
+    permite (certificado autofirmado del contenedor de desarrollo). En
+    producción debe quedar en 'no' para que el driver valide el certificado.
+    """
+    confiar = 'yes' if CONFIG.db_confiar_certificado else 'no'
     return (f"DRIVER={{{CONFIG.db_driver}}};SERVER={CONFIG.db_host};DATABASE={base};"
-            f"UID={usuario};PWD={clave};TrustServerCertificate=yes;Encrypt=no;")
+            f"UID={usuario};PWD={clave};Encrypt=yes;TrustServerCertificate={confiar};")
 
 
 def conectar_admin(base: str | None = None, autocommit: bool = False, tiempo: int = 30):
