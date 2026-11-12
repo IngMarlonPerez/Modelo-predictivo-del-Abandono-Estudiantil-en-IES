@@ -117,7 +117,7 @@ La versión 3 consolida el enfoque académico: todo el sistema, de la base de da
 | Consulta | 40 métricas certificadas, cascada de cuatro proveedores de IA y validación del árbol SQL; la IA nunca escribe ni lee otra institución |
 | Usuarios | Tres roles (autoridad académica, bienestar estudiantil y administración de TI), capacidades por rol, auditoría y bloqueo por intentos |
 | Interfaz | Identidad propia (isotipo animado en naranja UNEMI), apertura con las seis capacidades, panel ejecutivo, ficha con simulador, seguimiento, reportes PDF y Excel, tema claro y oscuro, versión móvil |
-| Operación | `reconstruir_sistema.bat` deja todo listo de punta a punta; 153 pruebas del backend y 11 de la interfaz |
+| Operación | `reconstruir_sistema.bat` deja todo listo de punta a punta; 211 pruebas del backend (203 unitarias y 8 de integración con SQL Server) y 11 de la interfaz |
 | Despliegue | `npm run dev` levanta todo en Docker con un solo comando: instala Docker si falta, elige puertos libres, descarga OULAD y carga los datos de prueba |
 | Repositorio | Flujo de ramas `devmarlon`/`contribuciones` → `pruebas` → `main` con reglas de protección, CI obligatoria y escaneo de secretos |
 
@@ -259,8 +259,8 @@ Cliente-servidor desacoplado con backend en capas, elegido frente al monolito y 
 |---|---|
 | Minimización | El modelo no usa nombres ni cédula; las vistas exponen solo lo necesario |
 | Aislamiento | Vistas filtradas por `SESSION_CONTEXT('institucion_activa')`; `chat_reader` solo lee vistas; `app_seguimiento` solo ejecuta dos procedimientos |
-| Confidencialidad | Cédula enmascarada en pantalla, ficha identificada con token Fernet y datos personales seudonimizados si se pide a la IA interpretar un resultado |
-| Seguridad | Contraseñas bcrypt, JWT con vencimiento, bloqueo tras intentos fallidos |
+| Confidencialidad | Cédula enmascarada en pantalla, ficha identificada con token Fernet y la pregunta sale hacia la IA depurada (cédulas, correos, teléfonos y nombres se reemplazan por marcadores como `NOMBRE_1`) y, si se pide interpretar un resultado, las filas salen seudonimizadas, sin texto libre y con registro en la bitácora (`CONSULTA_INTERPRETAR=0` lo deshabilita) |
+| Seguridad | Contraseñas bcrypt, JWT con vencimiento, bloqueo tras intentos fallidos y conexión con SQL Server siempre cifrada (`Encrypt=yes`) |
 | Responsabilidad | Auditoría de ingresos, fichas, consultas (con huella del SQL) y exportaciones |
 
 ## Instalación
@@ -309,7 +309,7 @@ npm run reconstruir -- --con-consulta      &REM equivale a scripts\reconstruir_s
 
 ```bash
 npm test                                    # backend (pytest) y frontend (vitest)
-cd backend && venv\Scripts\python -m pytest -q   # 153 pruebas + 8 de integración con SQL Server
+cd backend && venv\Scripts\python -m pytest -q   # 203 pruebas + 8 de integración con SQL Server
 cd frontend && npm test                     # 11 pruebas de la interfaz
 ```
 
